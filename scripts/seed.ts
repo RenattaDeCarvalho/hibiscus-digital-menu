@@ -4,19 +4,6 @@ import bcrypt from "bcryptjs";
 const prisma = new PrismaClient();
 
 async function main() {
-  // Seed admin users
-  const hash1 = await bcrypt.hash("johndoe123", 12);
-  await prisma.user.upsert({
-    where: { email: "john@doe.com" },
-    update: {},
-    create: {
-      email: "john@doe.com",
-      name: "Admin",
-      password: hash1,
-      role: "admin",
-    },
-  });
-
   const hash2 = await bcrypt.hash("admin123", 12);
   await prisma.user.upsert({
     where: { email: "admin@hibiscus.com" },
@@ -1589,7 +1576,7 @@ async function main() {
         namePt: "Carmen Insigne Carmenère - Viña Carmen",
         nameEn: "Carmen Insigne Carmenère - Viña Carmen",
         nameEs: "Carmen Insigne Carmenère - Viña Carmen",
-        ddescPt:
+        descPt:
           "É parcialmente barricado, para manter toda a exuberância da fruta. O bouquet é bastante complexo e cativante. Na boca mostra taninos suaves e macios, com sabor de geleia de frutas vermelhas, notas de menta e especiarias.",
         descEn:
           "Partially oak-aged to preserve the full exuberance of the fruit. The bouquet is complex and captivating. On the palate, it reveals soft and smooth tannins, with flavors of red fruit jam, complemented by hints of mint and spices.",

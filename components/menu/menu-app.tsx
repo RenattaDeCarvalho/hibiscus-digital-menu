@@ -1,33 +1,33 @@
 "use client";
-import { useState, useEffect, useCallback } from 'react';
-import { type Locale, t, getLocalizedName, getLocalizedDesc } from '@/lib/i18n';
-import { MenuHeader } from './menu-header';
-import { SearchBar } from './search-bar';
-import { CategoryCard } from './category-card';
-import { MenuItemCard } from './menu-item-card';
-import { MenuFooter } from './menu-footer';
-import { motion, AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
+import { useState, useEffect, useCallback } from "react";
+import { type Locale, t, getLocalizedName, getLocalizedDesc } from "@/lib/i18n";
+import { MenuHeader } from "./menu-header";
+import { SearchBar } from "./search-bar";
+import { CategoryCard } from "./category-card";
+import { MenuItemCard } from "./menu-item-card";
+import { MenuFooter } from "./menu-footer";
+import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 
 export function MenuApp() {
-  const [locale, setLocale] = useState<Locale>('pt');
+  const [locale, setLocale] = useState<Locale>("pt");
   const [categories, setCategories] = useState<any[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [heroImageUrl, setHeroImageUrl] = useState('/hero-bg.jpg');
+  const [heroImageUrl, setHeroImageUrl] = useState("/hero-bg.jpg");
   const [selectedWineGroup, setSelectedWineGroup] = useState<any>(null);
 
   useEffect(() => {
-    fetch('/api/categories')
+    fetch("/api/categories")
       .then((r: Response) => r?.json?.() ?? [])
       .then((data: any) => setCategories(data ?? []))
       .catch(() => setCategories([]))
       .finally(() => setLoading(false));
 
-    fetch('/api/settings')
+    fetch("/api/settings")
       .then((r: Response) => r?.json?.() ?? {})
       .then((data: any) => {
         if (data?.heroImageUrl) setHeroImageUrl(data.heroImageUrl);
@@ -35,22 +35,32 @@ export function MenuApp() {
       .catch(() => {});
   }, []);
 
+  const getBackToWineTypesLabel = (locale: string) => {
+    const labels = {
+      pt: "Voltar para tipos de vinho",
+      en: "Back to wine types",
+      es: "Volver a los tipos de vino",
+    };
+
+    return labels[locale as keyof typeof labels] ?? labels.pt;
+  };
+
   const handleSelectCategory = useCallback((cat: any) => {
     setSelectedWineGroup(null);
-    const slug = cat?.slug ?? '';
+    const slug = cat?.slug ?? "";
     if (!slug) return;
     fetch(`/api/categories/${slug}/items`)
       .then((r: Response) => r?.json?.())
       .then((data: any) => {
         setSelectedCategory(data ?? null);
-        setSearchQuery('');
+        setSearchQuery("");
         setSearchResults([]);
       })
       .catch(() => {});
   }, []);
 
   useEffect(() => {
-    const q = searchQuery?.trim?.() ?? '';
+    const q = searchQuery?.trim?.() ?? "";
     if (q?.length < 2) {
       setSearchResults([]);
       setIsSearching(false);
@@ -70,7 +80,7 @@ export function MenuApp() {
   const handleBack = useCallback(() => {
     setSelectedWineGroup(null);
     setSelectedCategory(null);
-    setSearchQuery('');
+    setSearchQuery("");
     setSearchResults([]);
   }, []);
 
@@ -122,37 +132,46 @@ export function MenuApp() {
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-12 h-[1px] bg-[hsl(40,60%,55%)]" />
                     <span className="text-[hsl(40,60%,55%)] text-[10px] tracking-[0.35em] uppercase font-semibold">
-                      {t('welcome', locale)}
+                      {t("welcome", locale)}
                     </span>
                     <div className="w-12 h-[1px] bg-[hsl(40,60%,55%)]" />
                   </div>
                   <p className="text-[hsl(40,10%,60%)] text-sm max-w-xs leading-relaxed">
-                    {t('subtitle', locale)}
+                    {t("subtitle", locale)}
                   </p>
                 </div>
               </div>
 
               {/* Search */}
               <div className="mb-8">
-                <SearchBar value={searchQuery} onChange={setSearchQuery} locale={locale} />
+                <SearchBar
+                  value={searchQuery}
+                  onChange={setSearchQuery}
+                  locale={locale}
+                />
               </div>
 
               {showingSearch ? (
                 <div className="space-y-3">
                   {(searchResults?.length ?? 0) === 0 && !isSearching ? (
                     <p className="text-center text-[hsl(40,10%,40%)] text-sm py-8 font-serif italic">
-                      {t('noResults', locale)}
+                      {t("noResults", locale)}
                     </p>
                   ) : (
-                    (searchResults ?? [])?.map?.((item: any, i: number) => (
-                      <MenuItemCard key={item?.id ?? i} item={item} locale={locale} index={i} />
-                    )) ?? []
+                    ((searchResults ?? [])?.map?.((item: any, i: number) => (
+                      <MenuItemCard
+                        key={item?.id ?? i}
+                        item={item}
+                        locale={locale}
+                        index={i}
+                      />
+                    )) ?? [])
                   )}
                 </div>
               ) : (
                 <>
                   <h2 className="text-[hsl(40,10%,45%)] text-[11px] tracking-[0.35em] uppercase mb-5">
-                    {t('categories', locale)}
+                    {t("categories", locale)}
                   </h2>
                   {loading ? (
                     <div className="flex justify-center py-12">
@@ -186,7 +205,7 @@ export function MenuApp() {
               {/* Category Header */}
               <div className="text-center mb-2">
                 <p className="text-[hsl(40,60%,55%)] text-[10px] tracking-[0.35em] uppercase mb-2">
-                  {t('categories', locale)}
+                  {t("categories", locale)}
                 </p>
                 <h2 className="font-serif text-[hsl(40,15%,90%)] text-3xl sm:text-4xl italic tracking-wide">
                   {getLocalizedName(selectedCategory, locale)}
@@ -203,18 +222,22 @@ export function MenuApp() {
               {/* Items */}
               <div className="space-y-6">
                 {(() => {
-                  const q = searchQuery?.trim?.()?.toLowerCase?.() ?? '';
+                  const q = searchQuery?.trim?.()?.toLowerCase?.() ?? "";
                   const subCategories = selectedCategory?.subCategories ?? [];
                   const items = selectedCategory?.items ?? [];
 
                   const filterItems = (list: any[]) => {
                     if (q?.length < 2) return list;
 
-                    return list?.filter?.((item: any) => {
-                      const name = getLocalizedName(item, locale)?.toLowerCase?.() ?? '';
-                      const desc = getLocalizedDesc(item, locale)?.toLowerCase?.() ?? '';
-                      return name?.includes?.(q) || desc?.includes?.(q);
-                    }) ?? [];
+                    return (
+                      list?.filter?.((item: any) => {
+                        const name =
+                          getLocalizedName(item, locale)?.toLowerCase?.() ?? "";
+                        const desc =
+                          getLocalizedDesc(item, locale)?.toLowerCase?.() ?? "";
+                        return name?.includes?.(q) || desc?.includes?.(q);
+                      }) ?? []
+                    );
                   };
 
                   const hasSubCategories = (subCategories?.length ?? 0) > 0;
@@ -222,7 +245,11 @@ export function MenuApp() {
                   if (hasSubCategories && !selectedWineGroup) {
                     return subCategories.map((sub: any) => {
                       const wineTypes = Array.from(
-                        new Set((sub?.items ?? []).map((item: any) => item?.wineType).filter(Boolean))
+                        new Set(
+                          (sub?.items ?? [])
+                            .map((item: any) => item?.wineType)
+                            .filter(Boolean),
+                        ),
                       );
 
                       return (
@@ -235,7 +262,12 @@ export function MenuApp() {
                             {wineTypes.map((type: any) => (
                               <button
                                 key={type}
-                                onClick={() => setSelectedWineGroup({ subCategory: sub, wineType: type })}
+                                onClick={() =>
+                                  setSelectedWineGroup({
+                                    subCategory: sub,
+                                    wineType: type,
+                                  })
+                                }
                                 className="w-full text-left rounded-xl border border-[hsl(40,20%,20%)] bg-[hsl(0,0%,8%)] px-4 py-3 text-[hsl(40,15%,90%)]"
                               >
                                 {type}
@@ -250,8 +282,9 @@ export function MenuApp() {
                   if (hasSubCategories && selectedWineGroup) {
                     const filtered = filterItems(
                       (selectedWineGroup.subCategory?.items ?? []).filter(
-                        (item: any) => item?.wineType === selectedWineGroup.wineType
-                      )
+                        (item: any) =>
+                          item?.wineType === selectedWineGroup.wineType,
+                      ),
                     );
 
                     return (
@@ -260,15 +293,24 @@ export function MenuApp() {
                           onClick={() => setSelectedWineGroup(null)}
                           className="text-[hsl(40,60%,55%)] text-sm mb-2"
                         >
-                          ← Voltar para tipos de vinho
+                          ← {getBackToWineTypesLabel(locale)}
                         </button>
 
                         <h3 className="font-serif text-[hsl(40,60%,55%)] text-2xl italic">
-                          {getLocalizedName(selectedWineGroup.subCategory, locale)} · {selectedWineGroup.wineType}
+                          {getLocalizedName(
+                            selectedWineGroup.subCategory,
+                            locale,
+                          )}{" "}
+                          · {selectedWineGroup.wineType}
                         </h3>
 
                         {filtered.map((item: any, i: number) => (
-                          <MenuItemCard key={item?.id ?? i} item={item} locale={locale} index={i} />
+                          <MenuItemCard
+                            key={item?.id ?? i}
+                            item={item}
+                            locale={locale}
+                            index={i}
+                          />
                         ))}
                       </div>
                     );
@@ -279,13 +321,18 @@ export function MenuApp() {
                   if ((filtered?.length ?? 0) === 0) {
                     return (
                       <p className="text-center text-[hsl(40,10%,40%)] text-sm py-8 font-serif italic">
-                        {t('noResults', locale)}
+                        {t("noResults", locale)}
                       </p>
                     );
                   }
 
                   return filtered.map((item: any, i: number) => (
-                    <MenuItemCard key={item?.id ?? i} item={item} locale={locale} index={i} />
+                    <MenuItemCard
+                      key={item?.id ?? i}
+                      item={item}
+                      locale={locale}
+                      index={i}
+                    />
                   ));
                 })()}
               </div>
