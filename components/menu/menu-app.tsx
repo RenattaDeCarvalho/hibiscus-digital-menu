@@ -35,6 +35,32 @@ export function MenuApp() {
       .catch(() => {});
   }, []);
 
+  const getLocalizedWineType = (wineType: string, locale: string) => {
+    const translations: Record<string, Record<string, string>> = {
+      Tinto: {
+        pt: "Tinto",
+        en: "Red",
+        es: "Tinto",
+      },
+      Branco: {
+        pt: "Branco",
+        en: "White",
+        es: "Blanco",
+      },
+      Rose: {
+        pt: "Rosé",
+        en: "Rosé",
+        es: "Rosado",
+      },
+      Espumante: {
+        pt: "Espumante",
+        en: "Sparkling Wine",
+        es: "Espumoso",
+      },
+    };
+    return translations[wineType]?.[locale] ?? wineType;
+  };
+
   const getBackToWineTypesLabel = (locale: string) => {
     const labels = {
       pt: "Voltar para tipos de vinho",
@@ -270,7 +296,7 @@ export function MenuApp() {
                                 }
                                 className="w-full text-left rounded-xl border border-[hsl(40,20%,20%)] bg-[hsl(0,0%,8%)] px-4 py-3 text-[hsl(40,15%,90%)]"
                               >
-                                {type}
+                                {getLocalizedWineType(type, locale)}
                               </button>
                             ))}
                           </div>
@@ -301,7 +327,11 @@ export function MenuApp() {
                             selectedWineGroup.subCategory,
                             locale,
                           )}{" "}
-                          · {selectedWineGroup.wineType}
+                          ·{" "}
+                          {getLocalizedWineType(
+                            selectedWineGroup.wineType,
+                            locale,
+                          )}
                         </h3>
 
                         {filtered.map((item: any, i: number) => (
