@@ -48,7 +48,7 @@ The platform allows customers to browse products, explore categories and subcate
 | Node.js | Runtime Environment |
 
 ---
-```
+<!--
 ## � Screenshots
 
 ### Home
@@ -66,7 +66,7 @@ The platform allows customers to browse products, explore categories and subcate
 ### Product Listing
 
 ![Product Listing](./docs/products.png)
-```
+-->
 ## 
 ---
 
