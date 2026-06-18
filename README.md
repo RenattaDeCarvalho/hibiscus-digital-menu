@@ -48,8 +48,8 @@ The platform allows customers to browse products, explore categories and subcate
 | Node.js | Runtime Environment |
 
 ---
-
-## 📸 Screenshots
+```
+## � Screenshots
 
 ### Home
 
@@ -66,7 +66,8 @@ The platform allows customers to browse products, explore categories and subcate
 ### Product Listing
 
 ![Product Listing](./docs/products.png)
-
+```
+## 
 ---
 
 ## 🏗️ Architecture Highlights
@@ -88,7 +89,7 @@ The platform allows customers to browse products, explore categories and subcate
 Software Engineer | Fullstack Developer focused on Backend Development
 
 - GitHub: https://github.com/RenattaDeCarvalho
-- LinkedIn: linkedin.com/in/renata-oliveira-carvalho
+- LinkedIn: https://www.linkedin.com/in/renata-oliveira-carvalho
 
 ---
 
