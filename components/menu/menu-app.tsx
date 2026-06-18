@@ -18,6 +18,7 @@ export function MenuApp() {
   const [isSearching, setIsSearching] = useState(false);
   const [loading, setLoading] = useState(true);
   const [heroImageUrl, setHeroImageUrl] = useState('/hero-bg.jpg');
+  const [selectedWineGroup, setSelectedWineGroup] = useState<any>(null);
 
   useEffect(() => {
     fetch('/api/categories')
@@ -35,6 +36,7 @@ export function MenuApp() {
   }, []);
 
   const handleSelectCategory = useCallback((cat: any) => {
+    setSelectedWineGroup(null);
     const slug = cat?.slug ?? '';
     if (!slug) return;
     fetch(`/api/categories/${slug}/items`)
@@ -66,6 +68,7 @@ export function MenuApp() {
   }, [searchQuery]);
 
   const handleBack = useCallback(() => {
+    setSelectedWineGroup(null);
     setSelectedCategory(null);
     setSearchQuery('');
     setSearchResults([]);
@@ -210,46 +213,65 @@ export function MenuApp() {
                     return list?.filter?.((item: any) => {
                       const name = getLocalizedName(item, locale)?.toLowerCase?.() ?? '';
                       const desc = getLocalizedDesc(item, locale)?.toLowerCase?.() ?? '';
-
                       return name?.includes?.(q) || desc?.includes?.(q);
                     }) ?? [];
                   };
 
-                  if ((subCategories?.length ?? 0) > 0) {
-                    const visibleSubCategories = subCategories
-                      .map((sub: any) => ({
-                        ...sub,
-                        items: filterItems(sub?.items ?? []),
-                      }))
-                      .filter((sub: any) => (sub?.items?.length ?? 0) > 0);
+                  const hasSubCategories = (subCategories?.length ?? 0) > 0;
 
-                    if ((visibleSubCategories?.length ?? 0) === 0) {
-                      return (
-                        <p className="text-center text-[hsl(40,10%,40%)] text-sm py-8 font-serif italic">
-                          {t('noResults', locale)}
-                        </p>
+                  if (hasSubCategories && !selectedWineGroup) {
+                    return subCategories.map((sub: any) => {
+                      const wineTypes = Array.from(
+                        new Set((sub?.items ?? []).map((item: any) => item?.wineType).filter(Boolean))
                       );
-                    }
 
-                    return visibleSubCategories.map((sub: any, subIndex: number) => (
-                      <div key={sub?.id ?? subIndex} className="space-y-3">
-                        <div className="pt-4 pb-1">
+                      return (
+                        <div key={sub.id} className="space-y-3">
                           <h3 className="font-serif text-[hsl(40,60%,55%)] text-2xl italic">
                             {getLocalizedName(sub, locale)}
                           </h3>
-                          <div className="w-10 h-[1px] bg-[hsl(40,60%,55%)] mt-2" />
-                        </div>
 
-                        {(sub?.items ?? []).map((item: any, i: number) => (
-                          <MenuItemCard
-                            key={item?.id ?? i}
-                            item={item}
-                            locale={locale}
-                            index={i}
-                          />
+                          <div className="space-y-2">
+                            {wineTypes.map((type: any) => (
+                              <button
+                                key={type}
+                                onClick={() => setSelectedWineGroup({ subCategory: sub, wineType: type })}
+                                className="w-full text-left rounded-xl border border-[hsl(40,20%,20%)] bg-[hsl(0,0%,8%)] px-4 py-3 text-[hsl(40,15%,90%)]"
+                              >
+                                {type}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    });
+                  }
+
+                  if (hasSubCategories && selectedWineGroup) {
+                    const filtered = filterItems(
+                      (selectedWineGroup.subCategory?.items ?? []).filter(
+                        (item: any) => item?.wineType === selectedWineGroup.wineType
+                      )
+                    );
+
+                    return (
+                      <div className="space-y-3">
+                        <button
+                          onClick={() => setSelectedWineGroup(null)}
+                          className="text-[hsl(40,60%,55%)] text-sm mb-2"
+                        >
+                          ← Voltar para tipos de vinho
+                        </button>
+
+                        <h3 className="font-serif text-[hsl(40,60%,55%)] text-2xl italic">
+                          {getLocalizedName(selectedWineGroup.subCategory, locale)} · {selectedWineGroup.wineType}
+                        </h3>
+
+                        {filtered.map((item: any, i: number) => (
+                          <MenuItemCard key={item?.id ?? i} item={item} locale={locale} index={i} />
                         ))}
                       </div>
-                    ));
+                    );
                   }
 
                   const filtered = filterItems(items);
@@ -262,34 +284,9 @@ export function MenuApp() {
                     );
                   }
 
-                  return (filtered ?? [])?.map?.((item: any, i: number) => (
+                  return filtered.map((item: any, i: number) => (
                     <MenuItemCard key={item?.id ?? i} item={item} locale={locale} index={i} />
-                  )) ?? [];
-                })()}
-              </div>
-
-              {/* Items */}
-              <div className="space-y-3">
-                {(() => {
-                  const items = selectedCategory?.items ?? [];
-                  const q = searchQuery?.trim?.()?.toLowerCase?.() ?? '';
-                  const filtered = q?.length >= 2
-                    ? items?.filter?.((item: any) => {
-                        const name = getLocalizedName(item, locale)?.toLowerCase?.() ?? '';
-                        const desc = getLocalizedDesc(item, locale)?.toLowerCase?.() ?? '';
-                        return name?.includes?.(q) || desc?.includes?.(q);
-                      }) ?? []
-                    : items;
-                  if ((filtered?.length ?? 0) === 0) {
-                    return (
-                      <p className="text-center text-[hsl(40,10%,40%)] text-sm py-8 font-serif italic">
-                        {t('noResults', locale)}
-                      </p>
-                    );
-                  }
-                  return (filtered ?? [])?.map?.((item: any, i: number) => (
-                    <MenuItemCard key={item?.id ?? i} item={item} locale={locale} index={i} />
-                  )) ?? [];
+                  ));
                 })()}
               </div>
             </motion.div>
