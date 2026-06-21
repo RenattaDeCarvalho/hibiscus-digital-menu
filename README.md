@@ -20,6 +20,7 @@ Hibiscus Digital Menu is a modern digital menu solution designed to improve the 
 
 The platform allows customers to browse products, explore categories and subcategories, search for items and view detailed product information in a fast and responsive interface.
 
+
 ---
 
 ## ✨ Features
@@ -72,14 +73,15 @@ The platform allows customers to browse products, explore categories and subcate
 
 ## 🏗️ Architecture Highlights
 
-- Component-based architecture
-- Internationalization (i18n)
-- Dynamic category navigation
-- Reusable UI components
-- Responsive design principles
-- Scalable menu structure
-- Optimized user experience for mobile devices
-
+- Fullstack architecture built with Next.js
+- Separation of concerns across presentation, API, and data layers
+- Prisma ORM for database access and persistence
+- PostgreSQL as the primary data store
+- Component-based and reusable UI architecture
+- Internationalization (i18n) support
+- Scalable menu and category management structure
+- Responsive and mobile-first design
+- Optimized user experience for QR code access and mobile devices
 ---
 
 ## 👩‍💻 Author

@@ -7,7 +7,6 @@ export async function GET(req: Request) {
     const url = new URL(req?.url ?? 'http://localhost:3000');
     const q = url?.searchParams?.get('q') ?? '';
 
-    console.log('TESTE ---------------', q);
     if (!q || q?.length < 2) {
       return NextResponse.json([]);
     }
