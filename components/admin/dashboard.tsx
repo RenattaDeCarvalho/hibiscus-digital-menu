@@ -192,7 +192,7 @@ export function AdminDashboard() {
       <header className="sticky top-0 z-50 bg-[hsl(0,0%,5%)]/95 backdrop-blur-sm border-b border-[hsl(0,0%,12%)]">
         <div className="max-w-[1000px] mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="relative w-11 h-11">
+            <div className="relative w-14 h-14">
               <Image src="/logo-hibiscus.png" alt="Hibiscus" fill className="object-contain" />
             </div>
             <div>
