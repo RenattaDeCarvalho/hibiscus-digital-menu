@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="/public/logo-hibiscus.png" alt="Hibiscus Digital Menu" width="250" />
+  <img src="/public/logo-hibiscus.png" alt="Hibiscus Digital Menu" width="150" />
 </p>
 
 <h1 align="center">🌺 Hibiscus Digital Menu</h1>
