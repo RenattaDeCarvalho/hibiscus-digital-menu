@@ -31,6 +31,7 @@ async function main() {
         descEn: cat.descEn,
         descEs: cat.descEs,
         iconUrl: cat.iconUrl,
+        bannerUrl: cat.bannerUrl,
         sortOrder: cat.sortOrder,
       },
       create: cat,

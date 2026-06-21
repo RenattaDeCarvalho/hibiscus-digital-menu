@@ -86,6 +86,15 @@ export function MenuApp() {
   }, []);
 
   useEffect(() => {
+    if (!selectedCategory) return;
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [selectedCategory]);
+
+  useEffect(() => {
     const q = searchQuery?.trim?.() ?? "";
     if (q?.length < 2) {
       setSearchResults([]);
@@ -230,10 +239,10 @@ export function MenuApp() {
             >
               {/* Category Header */}
               <div className="text-center mb-2">
-                <p className="text-[hsl(40,60%,55%)] text-[10px] tracking-[0.35em] uppercase mb-2">
+                {/* <p className="text-[hsl(40,60%,55%)] text-[10px] tracking-[0.35em] uppercase mb-2">
                   {t("categories", locale)}
-                </p>
-                <h2 className="font-serif text-[hsl(40,15%,90%)] text-3xl sm:text-4xl italic tracking-wide">
+                </p> */}
+                <h2 className="font-serif text-[hsl(40,60%,55%)] text-3xl sm:text-4xl italic tracking-wide">
                   {getLocalizedName(selectedCategory, locale)}
                 </h2>
                 {getLocalizedDesc(selectedCategory, locale) ? (
@@ -243,6 +252,19 @@ export function MenuApp() {
                 ) : null}
                 <div className="w-10 h-[1px] bg-[hsl(40,10%,25%)] mx-auto mt-4" />
               </div>
+
+              {/* Category Banner */}
+              {selectedCategory?.bannerUrl && (
+                <div className="relative w-full h-56 md:h-80 mb-6 overflow-hidden rounded-2xl">
+                  <Image
+                    src={selectedCategory.bannerUrl}
+                    alt={getLocalizedName(selectedCategory, locale)}
+                    fill
+                    className="object-cover"
+                    priority
+                  />
+                </div>
+              )}
 
               {/* Search in category */}
               {/* Items */}

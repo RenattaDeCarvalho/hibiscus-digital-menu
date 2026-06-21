@@ -13,7 +13,6 @@ export function MenuItemCard({ item, locale, index }: MenuItemCardProps) {
   const name = getLocalizedName(item, locale);
   const desc = getLocalizedDesc(item, locale);
   const price = item?.price ?? 0;
-  const imageUrl = item?.imageUrl ?? null;
 
   return (
     <motion.div
@@ -22,14 +21,6 @@ export function MenuItemCard({ item, locale, index }: MenuItemCardProps) {
       transition={{ delay: (index ?? 0) * 0.04, duration: 0.3 }}
       className="flex items-start gap-4 p-4 rounded-xl border border-[hsl(40,20%,18%)] bg-[hsl(0,0%,7%)]/80 hover:bg-[hsl(0,0%,10%)] hover:border-[hsl(40,30%,22%)] transition-all duration-300"
     >
-      {/* Image or placeholder */}
-      <div className="relative w-[80px] h-[80px] flex-shrink-0 rounded-lg overflow-hidden bg-[hsl(0,0%,10%)] border border-[hsl(40,15%,16%)] flex items-center justify-center">
-        {imageUrl ? (
-          <Image src={imageUrl} alt={name} fill className="object-cover" />
-        ) : (
-          <span className="font-serif text-[hsl(40,20%,35%)] text-2xl italic select-none">H</span>
-        )}
-      </div>
       <div className="flex-1 min-w-0 py-0.5">
         <h4 className="font-serif text-[hsl(40,15%,88%)] text-[15px] leading-tight mb-1">{name}</h4>
         {desc ? (
