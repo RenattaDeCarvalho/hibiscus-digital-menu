@@ -1,10 +1,24 @@
 export const openApiDocument = {
     openapi: '3.0.0',
     info: {
-        title: 'Hibiscus Menu API',
-        version: '1.0.0',
-        description: 'API documentation for the Hibiscus Menu platform.',
+        title: "API Documentation",
+        version: "1.0.0",
+        description:
+            "OpenAPI documentation for the Hibiscus Digital Menu platform, featuring multilingual menu management, public menu access, administration tools, settings and media upload services.",
+        contact: {
+            name: "Renatta de Carvalho",
+            // url: "https://github.com/RenattaDeCarvalho",
+        },
+        license: {
+            name: "Private Project",
+        },
     },
+    servers: [
+        {
+            url: "https://hibiscus-menu.vercel.app",
+            description: "Production",
+        },
+    ],
     components: {
         schemas: {
             Category: {
@@ -256,30 +270,12 @@ export const openApiDocument = {
         },
     },
     tags: [
-        {
-            name: "Public",
-            description: "Public menu endpoints",
-        },
-        {
-            name: "Auth",
-            description: "Authentication endpoints",
-        },
-        {
-            name: "Admin Categories",
-            description: "Category management",
-        },
-        {
-            name: "Admin Items",
-            description: "Menu item management",
-        },
-        {
-            name: "Settings",
-            description: "Application settings",
-        },
-        {
-            name: "Upload",
-            description: "Image upload endpoints",
-        },
+        { name: "Public", description: "Public endpoints used by customers to browse the menu." },
+        { name: "Authentication", description: "Admin authentication and session validation." },
+        { name: "Admin Categories", description: "Protected category management endpoints." },
+        { name: "Admin Items", description: "Protected menu item management endpoints." },
+        { name: "Uploads", description: "Image upload and media handling endpoints." },
+        { name: "Settings", description: "Restaurant configuration and visual settings." },
     ],
     paths: {
         "/api/categories": {
@@ -410,7 +406,7 @@ export const openApiDocument = {
         },
         "/api/auth/register": {
             post: {
-                tags: ["Auth"],
+                tags: ["Authentication"],
 
                 summary: "Register user",
 

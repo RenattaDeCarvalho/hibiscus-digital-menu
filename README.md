@@ -86,7 +86,7 @@ The platform allows customers to browse products, explore categories and subcate
 
 ## 👩‍💻 Author
 
-**Renata Carvalho**
+**Renatta de Carvalho**
 
 Software Engineer | Fullstack Developer focused on Backend Development
 
